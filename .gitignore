@@ -2,6 +2,7 @@
 /node_modules
 /dist
 venv
+.venv
 
 # Configuration and credentials
 .env
@@ -15,3 +16,6 @@ scripts
 
 # System files
 .DS_Store
+
+/data/images
+/data/metadata.jsonl

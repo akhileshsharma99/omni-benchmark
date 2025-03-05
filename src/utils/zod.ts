@@ -12,6 +12,10 @@ const zodTypeMapping = {
 export const generateZodSchema = (schemaDef: any): z.ZodObject<any> => {
   const properties: Record<string, any> = {};
 
+  if (!schemaDef) {
+    throw new Error('Schema definition is required');
+  }
+
   for (const [key, value] of Object.entries(schemaDef.properties) as any) {
     let zodType;
 

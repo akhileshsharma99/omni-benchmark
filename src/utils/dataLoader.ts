@@ -5,14 +5,33 @@ import path from 'path';
 
 // Pull JSON files from local folder
 export const loadLocalData = (folder: string): Input[] => {
-  const files = fs.readdirSync(folder).filter((file) => file.endsWith('.json'));
+  const files = fs.readdirSync(folder).filter((file) => file.endsWith('.jsonl'));
   const data = files.map((file) => {
     const filePath = path.join(folder, file);
     const fileContent = fs.readFileSync(filePath, 'utf8');
-    return JSON.parse(fileContent);
+    const jsonLines = fileContent.split('\n').filter(line => line.trim() !== '');
+
+    const output = jsonLines.map((line) => {
+      const jsonData = JSON.parse(line);
+
+      // Read the image file and convert it to Base64
+      const imagePath = path.join(folder, jsonData.file_name);
+      const imageBuffer = fs.readFileSync(imagePath);
+      const imageBase64 = imageBuffer.toString('base64');
+
+      return {
+        imageUrl: `data:image/png;base64,${imageBase64}`,
+        metadata: JSON.parse(jsonData.metadata),
+        jsonSchema: JSON.parse(jsonData.json_schema),
+        trueJsonOutput: JSON.parse(jsonData.true_json_output),
+        trueMarkdownOutput: jsonData.true_markdown_output,
+      };
+    });
+
+    return output;
   });
 
-  return data;
+  return data.flat();
 };
 
 // Query results from the documents table.
