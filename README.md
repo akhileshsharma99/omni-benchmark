@@ -79,6 +79,7 @@ You can view configuration for each model in the [src/models/](./src/models/) fo
 ![dashboard](./assets/dashboard-gif.gif)
 
 You can use benchmark dashboard to easily view the results of each test run. Check out the [dashboard documentation](dashboard/README.md) for more details.
+ard/README.md) for more details.
 
 ## License
 

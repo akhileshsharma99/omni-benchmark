@@ -42,8 +42,14 @@ export class ChunkrProvider extends ModelProvider {
         segment_processing: {
           Picture: {
             markdown: "LLM",
+            html: "LLM",
+          },
+          Page: {
+            markdown: "LLM",
+            // html: "LLM",
           }
         },
+        segmentation_strategy: "Page",
       })
     };
 
@@ -116,18 +122,52 @@ export class ChunkrProvider extends ModelProvider {
     throw new Error('No chunks found in Chunkr output');
   }
 
+  private getHTML(data: any) {
+    if (!data || !data.output) throw new Error('Invalid Chunkr data');
+
+    if (data.output.chunks) {
+      const parts = [];
+
+      for (const chunk of data.output.chunks) {
+        let chunkHTML = "";
+
+        if (chunk.segments) {
+          for (const segment of chunk.segments) {
+            if (segment.html) {
+              chunkHTML += segment.html;
+            }
+          }
+        }
+
+        if (chunkHTML) {
+          parts.push(chunkHTML);
+        }
+      }
+
+      return parts.join("\n\n");
+    }
+
+    throw new Error('No chunks found in Chunkr output');
+  }
+
   async ocr(imagePath: string) {
     try {
       const start = performance.now();
+      let text = '';
 
-      // Create task and get task ID
-      const taskId = await this.createTask(imagePath);
+      try {
+        // Create task and get task ID
+        const taskId = await this.createTask(imagePath);
 
-      // Poll until task completes
-      const output = await this.pollTaskStatus(taskId);
+        // Poll until task completes
+        const output = await this.pollTaskStatus(taskId);
 
-      // Extract text from output
-      const text = this.getMarkdown(output);
+        // Extract text from output
+        text = this.getMarkdown(output);
+        // text = this.getHTML(output);
+      } catch (error) {
+        console.error('Chunkr Error:', error);
+      }
 
       const end = performance.now();
 

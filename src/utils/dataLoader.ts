@@ -31,7 +31,7 @@ export const loadLocalData = (folder: string): Input[] => {
     return output;
   });
 
-  return data.flat();
+  return data.flat().slice(0, 10);
 };
 
 // Query results from the documents table.
