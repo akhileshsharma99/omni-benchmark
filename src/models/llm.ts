@@ -10,7 +10,7 @@ import { createAnthropic } from '@ai-sdk/anthropic';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { createDeepSeek } from '@ai-sdk/deepseek';
 import { createAzure } from '@ai-sdk/azure';
-import fs from 'fs';
+
 import { ExtractionResult, JsonSchema } from '../types';
 import { generateZodSchema, writeResultToFile } from '../utils';
 import { calculateTokenCost } from './shared';

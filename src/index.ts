@@ -35,6 +35,7 @@ const MODEL_CONCURRENCY = {
   'gpt-4o': 50,
   omniai: 30,
   zerox: 50,
+  'chunkr': 30
 };
 
 interface ModelConfig {
