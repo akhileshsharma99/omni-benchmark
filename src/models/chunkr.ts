@@ -42,14 +42,11 @@ export class ChunkrProvider extends ModelProvider {
         segment_processing: {
           Picture: {
             markdown: "LLM",
-            html: "LLM",
           },
           Page: {
             markdown: "LLM",
-            // html: "LLM",
           }
         },
-        segmentation_strategy: "Page",
       })
     };
 
