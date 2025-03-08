@@ -14,7 +14,7 @@ import { Result } from './types';
 import {
   createResultFolder,
   loadLocalData,
-  writeToFile,
+  safeWriteToFile,
   loadFromDb,
   createBenchmarkRun,
   saveResult,
@@ -35,7 +35,7 @@ const MODEL_CONCURRENCY = {
   'gpt-4o': 50,
   omniai: 30,
   zerox: 50,
-  'chunkr': 20
+  'chunkr': 30
 };
 
 interface ModelConfig {
@@ -275,7 +275,7 @@ const runBenchmark = async () => {
     await completeBenchmarkRun(benchmarkRun.id);
   }
 
-  writeToFile(path.join(resultFolder, 'results.json'), results);
+  safeWriteToFile(path.join(resultFolder, 'results.json'), results);
 };
 
 runBenchmark();

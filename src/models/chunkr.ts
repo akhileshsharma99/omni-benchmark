@@ -148,6 +148,7 @@ export class ChunkrProvider extends ModelProvider {
   }
 
   async ocr(imagePath: string) {
+    let success = true;
     try {
       const start = performance.now();
       let text = '';
@@ -164,6 +165,9 @@ export class ChunkrProvider extends ModelProvider {
         // text = this.getHTML(output);
       } catch (error) {
         console.error('Chunkr Error:', error);
+        if (error instanceof Error && error.message.includes('task failed')) {
+          success = false;
+        }
       }
 
       const end = performance.now();
@@ -172,7 +176,7 @@ export class ChunkrProvider extends ModelProvider {
         text,
         usage: {
           duration: end - start,
-          totalCost: COST_PER_PAGE, // the input is always 1 page.
+          totalCost: success ? COST_PER_PAGE : 0, // the input is always 1 page. Chunkr doesn't charge for failed tasks.
         },
       };
     } catch (error) {

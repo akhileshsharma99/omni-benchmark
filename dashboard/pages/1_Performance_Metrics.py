@@ -63,16 +63,16 @@ def create_model_comparison_table(results):
         stats = model_stats[model_key]
         stats["count"] += 1
         stats["text_accuracy"] += test.get("levenshteinDistance", 0) or 0
-        stats["total_cost"] += test["usage"]["totalCost"]
-        stats["ocr_cost"] += test["usage"].get("ocr", {}).get("totalCost", 0)
-        stats["ocr_latency"] += test["usage"].get("ocr", {}).get("duration", 0) / 1000
-        stats["ocr_input_tokens"] += test["usage"].get("ocr", {}).get("inputTokens", 0)
+        stats["total_cost"] += test.get("usage", {}).get("totalCost", 0)
+        stats["ocr_cost"] += test.get("usage", {}).get("ocr", {}).get("totalCost", 0)
+        stats["ocr_latency"] += test.get("usage", {}).get("ocr", {}).get("duration", 0) / 1000
+        stats["ocr_input_tokens"] += test.get("usage", {}).get("ocr", {}).get("inputTokens", 0)
         stats["ocr_output_tokens"] += (
-            test["usage"].get("ocr", {}).get("outputTokens", 0)
+            test.get("usage", {}).get("ocr", {}).get("outputTokens", 0)
         )
 
         # Add token counting
-        if "extraction" in test["usage"]:
+        if "extraction" in test.get("usage", {}):
             stats["extraction_input_tokens"] += test["usage"]["extraction"].get(
                 "inputTokens", 0
             )
